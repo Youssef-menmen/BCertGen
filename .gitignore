@@ -11,7 +11,7 @@ target/
 
 # ── Fichiers de configuration sensibles ──────
 src/main/resources/application.properties
-src/main/resources/application-prod.properties
+#src/main/resources/application-prod.properties
 # Commiter seulement les exemples :
 # application.properties.example ← à créer manuellement
 
