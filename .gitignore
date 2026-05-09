@@ -1,0 +1,37 @@
+# ═══════════════════════════════════════════════
+#  .gitignore — Spring Boot Backend
+#  NE PAS COMMITER ces fichiers sur GitHub
+# ═══════════════════════════════════════════════
+
+# ── Build Maven ──────────────────────────────
+target/
+*.jar
+*.war
+*.class
+
+# ── Fichiers de configuration sensibles ──────
+src/main/resources/application.properties
+src/main/resources/application-prod.properties
+# Commiter seulement les exemples :
+# application.properties.example ← à créer manuellement
+
+# ── IDE ──────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ── OS ───────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ─────────────────────────────────────
+*.log
+logs/
+
+# ── Docker volumes locaux ────────────────────
+mysql-data/

@@ -1,0 +1,51 @@
+# ═══════════════════════════════════════════════════════════
+#  docker-compose.yml — Développement local avec Docker
+#  Lance MySQL + Spring Boot ensemble
+#  Usage : docker-compose up
+# ═══════════════════════════════════════════════════════════
+
+version: '3.8'
+
+services:
+
+  # ── Base de données MySQL ──
+  mysql:
+    image: mysql:8.0
+    container_name: certgen-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: certgen_db
+      MYSQL_USER: certgen_user
+      MYSQL_PASSWORD: certgen_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+
+  # ── Spring Boot Backend ──
+  backend:
+    build: .
+    container_name: certgen-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:mysql://mysql:3306/certgen_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      DB_USERNAME: certgen_user
+      DB_PASSWORD: certgen_password
+      JWT_SECRET: local_docker_secret_change_in_production
+      SENDGRID_API_KEY: TON_API_KEY_ICI
+      FRONTEND_URL: http://localhost:3000
+      CORS_ORIGINS: http://localhost:3000,http://localhost:3001
+      PORT: 8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
